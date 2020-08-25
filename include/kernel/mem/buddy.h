@@ -58,6 +58,8 @@ size_t count_total_free_pages(void);
 struct page_info *page_alloc(int alloc_flags);
 void page_free(struct page_info *pp);
 void page_decref(struct page_info *pp);
+void buddy_migrate(void);
+int buddy_map_chunk(struct page_table *pml4, size_t index);
 
 static inline physaddr_t page2pa(struct page_info *pp)
 {
