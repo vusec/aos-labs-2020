@@ -1,6 +1,7 @@
 #include <types.h>
 #include <list.h>
 #include <paging.h>
+#include <spinlock.h>
 #include <string.h>
 
 #include <kernel/mem.h>
@@ -11,6 +12,15 @@ struct page_info *pages;
 
 /* Lists of physical pages. */
 struct list page_free_list[BUDDY_MAX_ORDER];
+
+#ifndef USE_BIG_KERNEL_LOCK
+/* Lock for the buddy allocator. */
+struct spinlock buddy_lock = {
+#ifdef DEBUG_SPINLOCK
+	.name = "buddy_lock",
+#endif
+};
+#endif
 
 /* Counts the number of free pages for the given order.
  */
